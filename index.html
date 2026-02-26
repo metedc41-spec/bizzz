@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melis Nur ❤️</title>
+<style>
+body{margin:0;font-family:'Segoe UI',sans-serif;overflow:hidden;background:black;color:white;text-align:center;transition:0.5s;}
+video#bgVideo{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-3;filter:brightness(0.7);}
+canvas{position:fixed;top:0;left:0;z-index:-2;}
+#pulse{position:fixed;width:100%;height:100%;background:radial-gradient(circle,rgba(255,0,100,0.2),transparent 70%);z-index:-1;opacity:0;transition:0.5s;}
+#intro{position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;flex-direction:column;z-index:999;}
+#enterBtn{padding:15px 35px;border:none;border-radius:50px;background:#ff4e50;color:white;font-size:18px;cursor:pointer;box-shadow:0 0 25px red;}
+.container{display:none;padding:20px;margin-top:20px;animation:fade 2s ease-in-out;}
+@keyframes fade{from{opacity:0} to{opacity:1}}
+img{width:90%;max-width:420px;border-radius:20px;box-shadow:0 0 35px pink;cursor:pointer;transition:0.3s;}
+img:hover{transform:scale(1.05);}
+button{margin:8px;padding:10px 20px;border:none;border-radius:30px;background:#ff4e50;color:white;cursor:pointer;box-shadow:0 0 15px red;}
+.note{margin-top:20px;font-size:18px;font-style:italic;text-shadow:0 0 15px pink;}
+.heart{position:fixed;top:-10px;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);}}
+#lightbox{position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.95);display:none;justify-content:center;align-items:center;z-index:1000;}
+#lightbox img{width:90%;max-width:600px;}
+#yesEffect{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3em;color:#ff4e50;text-shadow:0 0 50px pink;display:none;z-index:1001;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<video id="bgVideo" autoplay muted loop>
+<source src="background.mp4" type="video/mp4">
+</video>
+<canvas id="stars"></canvas>
+<div id="pulse"></div>
+
+<div id="intro">
+<h1 style="text-shadow:0 0 25px pink;">Melis Nur ❤️</h1>
+<button id="enterBtn">Aşk Başlasın 💖</button>
+</div>
+
+<div class="container" id="main">
+<h1 id="typing"></h1>
+<img id="slider" src="biz1.jpg">
+<div id="counter"></div>
+<div class="note">"ben o ilk okey masasında vuruldum sana"</div>
+<h3>Benimle Evlenir misin? 💍</h3>
+<button id="yesBtn">Evet ❤️</button>
+<button id="noBtn">Hayır 😢</button>
+<button onclick="firework()">🎆 Patlat</button>
+</div>
+
+<div id="lightbox" onclick="this.style.display='none'">
+<img id="lightboxImg">
+</div>
+
+<div id="yesEffect">Sonsuza kadar birlikteyiz ❤️💍</div>
+
+<audio id="music" src="muzik.mp3" loop></audio>
+
+<script>
+// Yıldızlar
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let stars=[];
+for(let i=0;i<350;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2});}
+function drawStars(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(drawStars);}
+drawStars();
+
+// Giriş
+document.getElementById("enterBtn").onclick=function(){
+document.getElementById("music").play();
+document.getElementById("intro").style.display="none";
+document.getElementById("main").style.display="block";
+startTyping(); startPulse();
+}
+
+// Yazı
+function startTyping(){const text="Melis Nur ❤️ Sonsuza Kadar";let i=0;function type(){if(i<text.length){document.getElementById("typing").innerHTML+=text.charAt(i);i++;setTimeout(type,70);}}type();}
+
+// Nabız
+function startPulse(){setInterval(()=>{const pulse=document.getElementById("pulse");pulse.style.opacity=0.4;setTimeout(()=>{pulse.style.opacity=0;},400);},1500);}
+
+// Sayaç
+function updateCounter(){const startDate=new Date("2025-12-23T00:00:00");const now=new Date();const diff=now-startDate;if(diff<0){document.getElementById("counter").innerHTML="23 Aralık 2025'i bekliyoruz ❤️";return;}const d=Math.floor(diff/86400000);const h=Math.floor((diff/3600000)%24);const m=Math.floor((diff/60000)%60);const s=Math.floor((diff/1000)%60);document.getElementById("counter").innerHTML=d+" gün "+h+" saat "+m+" dakika "+s+" saniye 💖";}
+setInterval(updateCounter,1000);
+
+// Kalpler
+function createHeart(){const heart=document.createElement("div");heart.className="heart";heart.innerHTML="❤️";heart.style.left=Math.random()*100+"vw";heart.style.fontSize=(Math.random()*25+15)+"px";heart.style.animationDuration=(Math.random()*4+2)+"s";document.body.appendChild(heart);setTimeout(()=>heart.remove(),6000);}
+setInterval(createHeart,150);
+
+// Slider
+const images=["biz1.jpg","biz2.jpg","biz3.jpg","biz4.jpg"];
+let current=0; setInterval(()=>{current=(current+1)%images.length;document.getElementById("slider").src=images[current];},3000);
+document.getElementById("slider").onclick=function(){document.getElementById("lightbox").style.display="flex";document.getElementById("lightboxImg").src=this.src;}
+
+// Hayır butonu
+const noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=function(){noBtn.style.position="absolute";noBtn.style.left=Math.random()*80+"%";noBtn.style.top=Math.random()*80+"%";}
+
+// Ultra Evet efekt
+document.getElementById("yesBtn").onclick=function(){ultraYesEffect();}
+function ultraYesEffect(){
+const yes=document.getElementById("yesEffect");
+yes.style.display="block"; yes.style.opacity=0; yes.style.transform="scale(0)";
+
+// Arka plan renk patlaması
+let hue=0;
+let colorInterval=setInterval(()=>{document.body.style.background=`hsl(${hue},50%,5%)`;hue+=5;},50);
+
+// Patlamalı kalpler ve havai fişek
+for(let i=0;i<120;i++){setTimeout(()=>{createHeart(); firework();},i*40);}
+
+// Yazı animasyonu
+let op=0; let scale=0;
+let anim=setInterval(()=>{
+if(op<1){op+=0.03; scale+=0.03; yes.style.opacity=op; yes.style.transform=`scale(${scale})`;}
+else{clearInterval(anim); setTimeout(()=>{yes.style.display="none"; clearInterval(colorInterval); document.body.style.background="black";},7000);}
+},50);
+}
+
+// Havai fişek
+function firework(){for(let i=0;i<50;i++){let spark=document.createElement("div");spark.style.position="fixed";spark.style.width="4px";spark.style.height="4px";spark.style.background="white";spark.style.left="50%";spark.style.top="50%";spark.style.borderRadius="50%";spark.style.transform=`translate(${Math.random()*1000-500}px,${Math.random()*1000-500}px)`;document.body.appendChild(spark);setTimeout(()=>spark.remove(),1200);}}
+</script>
+</body>
+</html>
